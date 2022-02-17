@@ -10,7 +10,7 @@ var PENGUIN_HEAD_RADIUS = PENGUIN_HEIGHT/2;
 var PENGUIN_EYE_RADIUS = 4;
 var PENGUIN_TONGUE_WIDTH = 8;
 var PENGUIN_TONGUE_HEIGHT = 3;
-var MOVE_SPEED = 3;
+var MOVE_SPEED = 3.2;
 var MAXHEART = 23;
 
 // Constants to represent the directions
@@ -21,7 +21,7 @@ var NORTH = 3;
 
 var text1 = readLine("This is a penguin game where you control the penguin " +
 "with arrow keyboards and your point is to catch hearts untill you catch " +
-"them all (23). Try not to hit walls or rectangles, " +
+"them all (23). Note that game gets harder after 15 heart. Try not to hit walls or rectangles, " +
 "as it means you loose the game. (Click OK to start and then click on the game to activate penguin)");
 
 var penguinHead;
@@ -32,7 +32,7 @@ var heart;
 var scoreboardLine;
 var scoreboard;
 var countHeart = 0;
-var dy = 2;
+var dy = 4;
 var rectangle1;
 var rectangle2;
 var rectangle3;
@@ -88,6 +88,12 @@ function moveObstacleRectangle(){
     rectangle1.move(0, dy);
     rectangle2.move(0, dy*0.5);
     rectangle3.move(0, dy*1.5);
+    if(countHeart > 15){
+        rectangle1.move(0, dy*1.1);
+        rectangle2.move(0, dy*0.6);
+        rectangle3.move(0, dy*1.6);
+        MOVE_SPEED = 4;
+    }
     checkLine();
 }
 
@@ -155,7 +161,9 @@ function addScoreboardLine(){
 }
 
 function addScoreboard(){
-    remove(scoreboard);
+    if(countHeart > 0){
+        remove(scoreboard);
+    }
     scoreboard = new Text("Scoreboard: " + countHeart, "10pt arial");
     scoreboard.setPosition(getWidth()/2 - scoreboard.getWidth()/2, getHeight() - 5);
     add(scoreboard);
